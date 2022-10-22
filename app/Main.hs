@@ -1,8 +1,13 @@
 module Main where
 
-import qualified MyLib (someFunc)
+import Sources.Pnpm ( parsePnpmAudit )
+import Lib.Report ( createReports, printReport )
+import qualified Data.ByteString.Lazy as BS
 
 main :: IO ()
 main = do
-    putStrLn "Hello, Haskell!"
-    MyLib.someFunc
+    audit <- parsePnpmAudit <$> BS.readFile "./deps.json"
+    let reports = createReports <$> audit
+    case reports of
+        Nothing -> print "Error parsing report"
+        Just reports' -> mapM_ printReport reports'
