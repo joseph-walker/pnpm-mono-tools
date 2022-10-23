@@ -56,6 +56,6 @@ pnpmAuditToPackageList (PnpmPackage name version dependencies devDependencies) =
             (extractDependencies <$> dependencies)
             (extractDependencies <$> devDependencies)
 
-parsePnpmAudit :: BS.ByteString -> Maybe [Package]
+parsePnpmAudit :: BS.ByteString -> Either String [Package]
 parsePnpmAudit src =
-    fmap pnpmAuditToPackageList <$> decode src
+    fmap pnpmAuditToPackageList <$> eitherDecode src

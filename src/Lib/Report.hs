@@ -74,7 +74,7 @@ printReport :: (String, Report) -> IO ()
 printReport (pkg, report) =
     case report of
         Just versionMap -> printReportErr pkg versionMap
-        Nothing -> printReportOk pkg
+        Nothing         -> printReportOk pkg
 
 printReports :: [(String, Report)] -> IO ()
 printReports =

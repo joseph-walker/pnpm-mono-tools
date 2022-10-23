@@ -1,22 +1,22 @@
 module Data.Dependencies ( Dependency (..), Package (..) ) where
 
 data Dependency = Dependency
-    { dependencyName :: String
+    { dependencyName    :: String
     , dependencyVersion :: String
     }
-    deriving (Eq)
+    deriving Eq
 
 instance Show Dependency where
     show (Dependency name version) =
         name ++ "@" ++ version
 
 data Package = Package
-    { packageName :: String
-    , packageVersion :: String
-    , dependencies :: Maybe [Dependency]
+    { packageName     :: String
+    , packageVersion  :: String
+    , dependencies    :: Maybe [Dependency]
     , devDependencies :: Maybe [Dependency]
     }
-    deriving (Eq)
+    deriving Eq
 
 instance Show Package where
     show (Package name version deps devDeps) =

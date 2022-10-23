@@ -24,6 +24,8 @@ executable mono-tools
   build-depends:      base ^>=4.16.3.0
                     , mono-tools
                     , bytestring
+                    , process
+                    , mtl
   hs-source-dirs:     app
   default-language:   Haskell2010
   default-extensions: OverloadedStrings
