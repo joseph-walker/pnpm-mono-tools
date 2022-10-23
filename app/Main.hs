@@ -1,7 +1,7 @@
 module Main where
 
 import Sources.Pnpm ( parsePnpmAudit )
-import Lib.Report ( createReports, printReport )
+import Lib.Report ( createReports, printReports )
 import qualified Data.ByteString.Lazy as BS
 
 main :: IO ()
@@ -10,4 +10,4 @@ main = do
     let reports = createReports <$> audit
     case reports of
         Nothing -> print "Error parsing report"
-        Just reports' -> mapM_ printReport reports'
+        Just reports' -> printReports reports'

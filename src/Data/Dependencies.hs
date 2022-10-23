@@ -17,3 +17,14 @@ data Package = Package
     , devDependencies :: Maybe [Dependency]
     }
     deriving (Eq)
+
+instance Show Package where
+    show (Package name version deps devDeps) =
+        name
+        ++ "@"
+        ++ version
+        ++ "\n - deps => "
+        ++ maybe "[]" show deps
+        ++ "\n - devs => "
+        ++ maybe "[]" show devDeps
+        ++ "\n"
