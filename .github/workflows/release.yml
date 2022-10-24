@@ -12,20 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        name: Clone Repository
 
       - uses: haskell/actions/setup@v2
-        id: setup-haskell-cabal
         name: Setup Haskell
+        id: setup-haskell-cabal
         with:
           ghc-version: "9.2.4"
           cabal-version: "3.6.2.0"
 
-      - name: Freeze
+      - name: Create Cache Key from Freeze File
         run: |
           cabal freeze
 
       - uses: actions/cache@v3
-        name: Cache ~/.cabal/store
+        name: Cache Cabal Working Store
         with:
           path: ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
           key: ${{ runner.os }}-${{ hashFiles('cabal.project.freeze') }}
@@ -34,8 +35,11 @@ jobs:
         run: |
           cabal build all --only-dependencies
 
-      - name: Build
-        id: build
+      - name: Build Binary
         run: |
           cabal build exe:mono-tools
+
+      - name: Locate Binary
+        id: locate
+        run: |
           echo "path=$(cabal list-bin mono-tools)" >> $GITHUB_OUTPUT
