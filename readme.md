@@ -20,8 +20,9 @@ The easiest way to setup for development is with [GHCup](https://www.haskell.org
 
 1) Ensure that GHC and Cabal are both installed
 2) Clone this repo
-3.a) `cabal run` inside of the cloned directory to run the app
-3.b) `cabal build` to create the executable
+3) `cabal run mono-tools --` inside of the cloned directory to run the app
+4) `cabal build` to create the executable
+5) (Optional) `cabal install` to create a sym-linked executable in your $PATH
 
 The build artifact will be placed in a different output depending on the architecture of your machine and the
 version of GHC you use.
