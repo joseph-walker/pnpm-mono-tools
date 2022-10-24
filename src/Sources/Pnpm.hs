@@ -4,10 +4,10 @@ module Sources.Pnpm ( parsePnpmAudit ) where
 
 import Data.Aeson
 import Data.Aeson.KeyMap ( toList )
-import Data.Map ( Map, elems )
-import Data.Maybe ( fromMaybe )
 import Data.Aeson.Types ( Key, Parser )
 import Data.Dependencies ( Package (..), Dependency (..) )
+import Data.Map ( Map, elems )
+import Data.Maybe ( fromMaybe )
 
 import qualified Data.ByteString.Lazy as BS
 

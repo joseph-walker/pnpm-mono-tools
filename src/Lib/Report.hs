@@ -1,8 +1,8 @@
 module Lib.Report ( createReports, printReports ) where
 
-import Lib.Util ( initMap )
 import Data.Dependencies ( Package (..), Dependency (..) )
 import Data.Maybe ( fromMaybe )
+import Lib.Util ( initMap )
 
 import qualified Data.ByteString.Lazy as BS
 import qualified Data.Map as M

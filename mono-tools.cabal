@@ -7,14 +7,20 @@ maintainer:           joseph.walker@outlook.com
 extra-source-files:   CHANGELOG.md
 
 library
-  exposed-modules:    Sources.Pnpm
+  exposed-modules:    Command.CLI
+  other-modules:      Command.AuditInstalled
                     , Data.Dependencies
+                    , Data.Task
                     , Lib.Report
                     , Lib.Util
+                    , Sources.Pnpm
   build-depends:      base ^>=4.16.3.0
                     , aeson
-                    , containers
                     , bytestring
+                    , containers
+                    , mtl
+                    , optparse-applicative
+                    , process
   hs-source-dirs:     src
   default-language:   Haskell2010
   default-extensions: OverloadedStrings
@@ -23,10 +29,6 @@ executable mono-tools
   main-is:            Main.hs
   build-depends:      base ^>=4.16.3.0
                     , mono-tools
-                    , bytestring
-                    , process
-                    , mtl
-                    , optparse-applicative
   hs-source-dirs:     app
   default-language:   Haskell2010
   default-extensions: OverloadedStrings
