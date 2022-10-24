@@ -35,4 +35,4 @@ jobs:
       - name: Build
         run: |
           cabal update
-          cabal build --enable-tests --enable-benchmarks mono-tools
+          cabal build --enable-tests --enable-benchmarks exe:mono-tools
