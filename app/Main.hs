@@ -71,27 +71,25 @@ main =
             )
 
 runMonoTools :: MonoTools -> IO ()
-runMonoTools monoToolsOptions =
-    case optCommand monoToolsOptions of
-        AuditInstalled auditInstalledOptions ->
-            runAuditInstalledCommand auditInstalledOptions
-
-runAuditInstalledCommand :: AuditInstalledOptions -> IO ()
-runAuditInstalledCommand opts = do
-    result <- runExceptT runAuditInstalledCommand'
+runMonoTools monoToolsOptions = do
+    result <- runExceptT commandResult
     case result of
         Left err -> putStrLn $ "Err: " ++ err
         Right _  -> pure ()
     where
-        runAuditInstalledCommand' = do
-            input <- case auditInstalledInput opts of
-                FileInput file ->
-                    getInputFromFile file
-                _ ->
-                    getInputFromPnpmList
-            audit <- either throwError return (parsePnpmAudit input)
-            let reports = createReports audit
-            liftIO $ printReports reports
+        commandResult = case optCommand monoToolsOptions of
+            AuditInstalled auditInstalledOptions ->
+                runAuditInstalledCommand auditInstalledOptions
+
+runAuditInstalledCommand :: AuditInstalledOptions -> Task ()
+runAuditInstalledCommand opts = do
+    input <- case auditInstalledInput opts of
+        FileInput file ->
+            getInputFromFile file
+        _ ->
+            getInputFromPnpmList
+    audit <- either throwError return (parsePnpmAudit input)
+    liftIO $ printReports (createReports audit)
 
 getInputFromPnpmList :: Task BS.ByteString
 getInputFromPnpmList = do
