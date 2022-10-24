@@ -84,10 +84,8 @@ runMonoTools monoToolsOptions = do
 runAuditInstalledCommand :: AuditInstalledOptions -> Task ()
 runAuditInstalledCommand opts = do
     input <- case auditInstalledInput opts of
-        FileInput file ->
-            getInputFromFile file
-        _ ->
-            getInputFromPnpmList
+        FileInput file -> getInputFromFile file
+        _              -> getInputFromPnpmList -- TODO: Handle stdIn input type
     audit <- either throwError return (parsePnpmAudit input)
     liftIO $ printReports (createReports audit)
 
@@ -108,5 +106,12 @@ getInputFromPnpmList = do
 
 getInputFromFile :: FilePath -> Task BS.ByteString
 getInputFromFile inputFile = do
-    fileOrErr <- liftIO (try $ BS.readFile inputFile :: IO (Either IOException BS.ByteString))
-    either (\_ -> throwError ("Unable to open file - does " ++ inputFile ++ " exist?")) return fileOrErr
+    fileOrErr <- liftIO tryReadFile
+    either handleError return fileOrErr
+    where
+        tryReadFile :: IO (Either IOException BS.ByteString)
+        tryReadFile =
+            try $ BS.readFile inputFile
+        handleError :: IOException -> Task a
+        handleError _ =
+            throwError ("Unable to open file - does " ++ inputFile ++ " exist?")
