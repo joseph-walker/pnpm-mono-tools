@@ -1,9 +1,7 @@
-name: Haskell CI
+name: Release
 
 on:
   push:
-    branches: ["master"]
-  pull_request:
     branches: ["master"]
 
 permissions:
@@ -26,7 +24,7 @@ jobs:
         run: |
           cabal freeze
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         name: Cache ~/.cabal/store
         with:
           path: ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
@@ -37,5 +35,7 @@ jobs:
           cabal build all --only-dependencies
 
       - name: Build
+        id: build
         run: |
           cabal build exe:mono-tools
+          echo "path=$(cabal list-bin mono-tools)" >> $GITHUB_OUTPUT
