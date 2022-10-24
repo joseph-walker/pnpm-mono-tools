@@ -6,7 +6,7 @@ Opinionated tooling for managing dependencies in a PNPM / Turbo Monorepo
 
 ### Binary
 
-TBD (Will be built in GH Actions / CD)
+TBD (Will be released in GH Actions / CD)
 
 ### Development
 
