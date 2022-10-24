@@ -14,7 +14,7 @@ TODO:
 
 ### Development
 
-Built with GHC v9.2.4 & Built with __GHC v9.2.4__ & __Cabal v3.6.2.0__
+Built with __GHC v9.2.4__ & __Cabal v3.6.2.0__
 
 The easiest way to setup for development is with [GHCup](https://www.haskell.org/ghcup/)
 
