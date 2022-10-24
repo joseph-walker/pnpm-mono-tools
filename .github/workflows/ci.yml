@@ -16,11 +16,26 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: haskell/actions/setup@v2
+        id: setup-haskell-cabal
+        name: Setup Haskell
         with:
           ghc-version: "9.2.4"
           cabal-version: "3.6.2.0"
 
+      - name: Freeze
+        run: |
+          cabal freeze
+
+      - uses: actions/cache@v2
+        name: Cache ~/.cabal/store
+        with:
+          path: ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
+          key: ${{ runner.os }}-${{ hashFiles('cabal.project.freeze') }}
+
+      - name: Install dependencies
+        run: |
+          cabal build all --only-dependencies
+
       - name: Build
         run: |
-          cabal update
-          cabal build --enable-tests --enable-benchmarks exe:mono-tools
+          cabal build exe:mono-tools
