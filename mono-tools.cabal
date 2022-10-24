@@ -26,6 +26,7 @@ executable mono-tools
                     , bytestring
                     , process
                     , mtl
+                    , optparse-applicative
   hs-source-dirs:     app
   default-language:   Haskell2010
   default-extensions: OverloadedStrings
