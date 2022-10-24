@@ -43,3 +43,9 @@ jobs:
         id: locate
         run: |
           echo "path=$(cabal list-bin mono-tools)" >> $GITHUB_OUTPUT
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: mono-tools
+          path: ${{ steps.locate.outputs.path }}
