@@ -6,7 +6,11 @@ Opinionated tooling for managing dependencies in a PNPM / Turbo Monorepo
 
 ### Binary
 
-TBD (Will be released in GH Actions / CD)
+For now, find latest build in Artifacts section of latest Action run [here](https://github.com/joseph-walker/pnpm-mono-tools/actions).
+
+TODO:
+- Builds for different OS/Arch (Currently `x86_64-linux` only)
+- Upload build artifacts to the "Releases" channel for the repo w/ proper changelogs
 
 ### Development
 
