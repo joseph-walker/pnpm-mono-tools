@@ -11,6 +11,7 @@ executable mono-tools
   other-modules:      Command.AuditInstalled
                     , Command.AuditPackages
                     , Command.CLI
+                    , Command.Shared
                     , Data.Dependencies
                     , Data.Task
                     , Lib.Report

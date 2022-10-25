@@ -1,11 +1,10 @@
 module Lib.Report ( createReports, printReports ) where
 
-import Data.Dependencies ( Package (..), Dependency (..) )
-import Data.Maybe ( fromMaybe )
-import Lib.Util ( initMap )
-
 import qualified Data.ByteString.Lazy as BS
-import qualified Data.Map as M
+import           Data.Dependencies    ( Dependency (..), Package (..) )
+import qualified Data.Map             as M
+import           Data.Maybe           ( fromMaybe )
+import           Lib.Util             ( initMap )
 
 type DependencyWithParent = (String, Dependency)
 type VersionMap = M.Map String [String]

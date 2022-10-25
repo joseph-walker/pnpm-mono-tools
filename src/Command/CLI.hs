@@ -4,15 +4,15 @@
 module Command.CLI ( monoTools ) where
 
 import Command.AuditInstalled
+import Command.AuditPackages
 import Control.Monad.Except
-import Lib.Report ( createReports, printReports )
+import Lib.Report             ( createReports, printReports )
 import Options.Applicative
-import Sources.Pnpm ( parsePnpmAudit )
-import Command.AuditPackages ( auditPackagesCommand, runAuditPackagesCommand )
+import Sources.Pnpm           ( parsePnpmAudit )
 
 data Command
     = CmdAuditInstalled AuditInstalled
-    | CmdAuditPackage ()
+    | CmdAuditPackage AuditPackages
 
 data MonoTools = MonoTools
     { optCommand :: Command
@@ -43,5 +43,5 @@ runMonoTools monoToolsOptions = do
         commandResult = case optCommand monoToolsOptions of
             CmdAuditInstalled opts ->
                 runAuditInstalledCommand opts
-            CmdAuditPackage _ ->
-                runAuditPackagesCommand
+            CmdAuditPackage opts ->
+                runAuditPackagesCommand opts

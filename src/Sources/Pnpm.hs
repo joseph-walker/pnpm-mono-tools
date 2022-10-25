@@ -2,13 +2,12 @@
 
 module Sources.Pnpm ( parsePnpmAudit ) where
 
-import Data.Aeson
-import Data.Aeson.Types ( Key, Parser )
-import Data.Dependencies ( Package (..), Dependency (..) )
-import Data.Map ( Map, elems )
-import Data.Maybe ( fromMaybe )
-
+import           Data.Aeson
+import           Data.Aeson.Types     ( Key, Parser )
 import qualified Data.ByteString.Lazy as BS
+import           Data.Dependencies    ( Dependency (..), Package (..) )
+import           Data.Map             ( Map, elems )
+import           Data.Maybe           ( fromMaybe )
 
 data PnpmDependency = PnpmDependency
     { from    :: String

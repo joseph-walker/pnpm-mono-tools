@@ -2,12 +2,11 @@
 
 module Sources.PackageJson ( parsePackageJson ) where
 
-import Data.Aeson
-import Data.Aeson.Types ( Key, Parser )
-import Data.Dependencies ( Package (..), Dependency (..) )
-import Data.Map ( Map, elems, toList )
-
+import           Data.Aeson
+import           Data.Aeson.Types     ( Key, Parser )
 import qualified Data.ByteString.Lazy as BS
+import           Data.Dependencies    ( Dependency (..), Package (..) )
+import           Data.Map             ( Map, elems, toList )
 
 data PackageJson = PackageJson
     { name            :: String

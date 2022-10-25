@@ -7,17 +7,19 @@ module Command.AuditInstalled
     , runAuditInstalledCommand
     ) where
 
-import Control.Exception ( IOException, try )
-import Control.Monad.Except
-import Data.Task ( Task )
-import Lib.Report ( createReports, printReports )
-import Options.Applicative
-import Sources.Pnpm ( parsePnpmAudit )
-import System.Exit
-import System.Process ( readProcessWithExitCode )
-
-import qualified Data.ByteString.Lazy as BS
+import           Command.Shared             ( packageFilterParser )
+import           Control.Exception          ( IOException, try )
+import           Control.Monad.Except
+import qualified Data.ByteString.Lazy       as BS
 import qualified Data.ByteString.Lazy.Char8 as BSC
+import           Data.Maybe                 ( fromMaybe )
+import           Data.Task                  ( Task )
+import           Lib.Report                 ( createReports, printReports )
+import           Lib.Util                   ( maybeFilter )
+import           Options.Applicative
+import           Sources.Pnpm               ( parsePnpmAudit )
+import           System.Exit
+import           System.Process             ( readProcessWithExitCode )
 
 data InputSource
     = FileInput FilePath
@@ -26,6 +28,7 @@ data InputSource
 
 data AuditInstalled = AuditInstalled
     { auditInstalledInput :: InputSource
+    , packageFilter       :: Maybe String
     }
 
 fileInput :: Parser InputSource
@@ -71,16 +74,24 @@ getInputFromFile inputFile = do
 
 auditInstalledParser :: Parser AuditInstalled
 auditInstalledParser =
-    AuditInstalled <$> (fileInput <|> stdInput <|> pure InputNone)
+    AuditInstalled
+        <$> fileInputParser
+        <*> packageFilterParser
+    where
+        fileInputParser = fileInput <|> stdInput <|> pure InputNone
 
 auditInstalledCommand :: ParserInfo AuditInstalled
 auditInstalledCommand =
-    info auditInstalledParser ( progDesc "Run a dependency audit of the currently resolved package versions")
+    info auditInstalledParser $ progDesc "Run a dependency audit of the currently resolved package versions"
 
 runAuditInstalledCommand :: AuditInstalled -> Task ()
-runAuditInstalledCommand opts = do
-    input <- case auditInstalledInput opts of
+runAuditInstalledCommand (AuditInstalled inputSrc pkgFilter) = do
+    input <- case inputSrc of
         FileInput file -> getInputFromFile file
         _              -> getInputFromPnpmList -- TODO: Handle stdIn input type
-    audit <- either throwError return (parsePnpmAudit input)
-    liftIO $ printReports (createReports audit)
+    audit <- either throwError return $ parsePnpmAudit input
+    let filteredReports = maybeFilter pkgFilter $ createReports audit
+    reports <- case filteredReports of
+        [] -> throwError $ "No packages match requested pattern \"" ++ fromMaybe "" pkgFilter ++ "\""
+        xs -> return xs
+    liftIO $ printReports reports
