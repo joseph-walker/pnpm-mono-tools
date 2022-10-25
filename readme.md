@@ -9,7 +9,7 @@ Opinionated tooling for managing dependencies in a PNPM / Turbo Monorepo
 For now, find latest build in Artifacts section of latest Action run [here](https://github.com/joseph-walker/pnpm-mono-tools/actions).
 
 TODO:
-- Builds for different OS/Arch (Currently `x86_64-linux` only)
+- Builds for different OS/Arch (Currently `x86_64-linux` and `mac-os-latest` only)
 - Upload build artifacts to the "Releases" channel for the repo w/ proper changelogs
 
 ### Development
