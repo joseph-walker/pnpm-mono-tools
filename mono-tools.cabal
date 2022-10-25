@@ -6,10 +6,11 @@ author:               Joseph Walker
 maintainer:           joseph.walker@outlook.com
 extra-source-files:   CHANGELOG.md
 
-library
-  exposed-modules:    Command.CLI
+executable mono-tools
+  main-is:            Main.hs
   other-modules:      Command.AuditInstalled
                     , Command.AuditPackages
+                    , Command.CLI
                     , Data.Dependencies
                     , Data.Task
                     , Lib.Report
@@ -28,10 +29,3 @@ library
   default-language:   Haskell2010
   default-extensions: OverloadedStrings
 
-executable mono-tools
-  main-is:            Main.hs
-  build-depends:      base ^>=4.16.3.0
-                    , mono-tools
-  hs-source-dirs:     app
-  default-language:   Haskell2010
-  default-extensions: OverloadedStrings

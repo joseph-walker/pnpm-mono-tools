@@ -1,8 +1,10 @@
+-- | Standardized format for interacting with dependencies
 module Data.Dependencies ( Dependency (..), Package (..) ) where
 
+-- | A package description with a version, e.g. axios@1.0.1
 data Dependency = Dependency
-    { dependencyName    :: String
-    , dependencyVersion :: String
+    { dependencyName    :: String -- ^ Name
+    , dependencyVersion :: String -- ^ Version - format is unrestricted, i.e. not necessarily SemVer
     }
     deriving Eq
 

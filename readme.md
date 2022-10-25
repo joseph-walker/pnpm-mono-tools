@@ -6,10 +6,9 @@ Opinionated tooling for managing dependencies in a PNPM / Turbo Monorepo
 
 ### Binary
 
-For now, find latest build in Artifacts section of latest Action run [here](https://github.com/joseph-walker/pnpm-mono-tools/actions).
+For now, find latest build in Artifacts section of latest `Release` Action run [here](https://github.com/joseph-walker/pnpm-mono-tools/actions).
 
 TODO:
-- Builds for different OS/Arch (Currently `x86_64-linux` and `mac-os-latest` only)
 - Upload build artifacts to the "Releases" channel for the repo w/ proper changelogs
 
 ### Development
@@ -23,6 +22,7 @@ The easiest way to setup for development is with [GHCup](https://www.haskell.org
 3) `cabal run mono-tools --` inside of the cloned directory to run the app
 4) `cabal build` to create the executable
 5) (Optional) `cabal install` to create a sym-linked executable in your $PATH
+6) (Optional) `cabal haddock --haddock-executables --haddock-hyperlink-source` to generate documentation
 
 The build artifact will be placed in a different output depending on the architecture of your machine and the
 version of GHC you use.
