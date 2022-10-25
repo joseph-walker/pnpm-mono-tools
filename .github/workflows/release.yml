@@ -1,15 +1,19 @@
 name: Release
 
 on:
-  push:
-    branches: ["master"]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
     steps:
       - uses: actions/checkout@v3
         name: Clone Repository

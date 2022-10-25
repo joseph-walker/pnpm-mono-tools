@@ -9,18 +9,21 @@ extra-source-files:   CHANGELOG.md
 library
   exposed-modules:    Command.CLI
   other-modules:      Command.AuditInstalled
+                    , Command.AuditPackages
                     , Data.Dependencies
                     , Data.Task
                     , Lib.Report
                     , Lib.Util
+                    , Sources.PackageJson
                     , Sources.Pnpm
   build-depends:      base                ^>=4.16.3.0
-                    , aeson                >= 2.1.1 && < 2.2
+                    , aeson                >= 2.1.1  && < 2.2
                     , bytestring           >= 0.11.3 && < 0.12
-                    , containers           >= 0.6.5 && < 0.7
-                    , mtl                  >= 2.2.2 && < 2.3
+                    , containers           >= 0.6.5  && < 0.7
+                    , mtl                  >= 2.2.2  && < 2.3
                     , optparse-applicative >= 0.17.0 && < 0.18
                     , process              >= 1.6.13 && < 1.7
+                    , Glob
   hs-source-dirs:     src
   default-language:   Haskell2010
   default-extensions: OverloadedStrings

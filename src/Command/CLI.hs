@@ -8,9 +8,11 @@ import Control.Monad.Except
 import Lib.Report ( createReports, printReports )
 import Options.Applicative
 import Sources.Pnpm ( parsePnpmAudit )
+import Command.AuditPackages ( auditPackagesCommand, runAuditPackagesCommand )
 
 data Command
     = CmdAuditInstalled AuditInstalled
+    | CmdAuditPackage ()
 
 data MonoTools = MonoTools
     { optCommand :: Command
@@ -18,7 +20,8 @@ data MonoTools = MonoTools
 
 monoToolsParser :: Parser MonoTools
 monoToolsParser = MonoTools <$> hsubparser
-    ( command "audit-installed" (CmdAuditInstalled <$> auditInstalledCommand)
+    (  command "audit-installed" (CmdAuditInstalled <$> auditInstalledCommand)
+    <> command "audit-packages" (CmdAuditPackage <$> auditPackagesCommand)
     )
 
 monoTools :: IO ()
@@ -40,3 +43,5 @@ runMonoTools monoToolsOptions = do
         commandResult = case optCommand monoToolsOptions of
             CmdAuditInstalled opts ->
                 runAuditInstalledCommand opts
+            CmdAuditPackage _ ->
+                runAuditPackagesCommand

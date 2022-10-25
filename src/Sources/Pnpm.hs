@@ -3,7 +3,6 @@
 module Sources.Pnpm ( parsePnpmAudit ) where
 
 import Data.Aeson
-import Data.Aeson.KeyMap ( toList )
 import Data.Aeson.Types ( Key, Parser )
 import Data.Dependencies ( Package (..), Dependency (..) )
 import Data.Map ( Map, elems )

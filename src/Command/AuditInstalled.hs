@@ -75,7 +75,7 @@ auditInstalledParser =
 
 auditInstalledCommand :: ParserInfo AuditInstalled
 auditInstalledCommand =
-    info auditInstalledParser ( progDesc "String")
+    info auditInstalledParser ( progDesc "Run a dependency audit of the currently resolved package versions")
 
 runAuditInstalledCommand :: AuditInstalled -> Task ()
 runAuditInstalledCommand opts = do
