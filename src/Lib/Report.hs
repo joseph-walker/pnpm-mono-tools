@@ -1,4 +1,4 @@
-module Lib.Report ( createReports, printReports ) where
+module Lib.Report ( createReports, printReports, Report (..) ) where
 
 import qualified Data.ByteString.Lazy as BS
 import           Data.Dependencies    ( Dependency (..), Package (..) )

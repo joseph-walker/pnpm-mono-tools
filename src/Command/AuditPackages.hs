@@ -3,25 +3,28 @@
 
 module Command.AuditPackages ( auditPackagesCommand, runAuditPackagesCommand, AuditPackages ) where
 
-import           Command.Shared       ( packageFilterParser )
+import           Command.Shared       ( failingOnly, packageFilterParser )
 import           Control.Monad        ( join )
 import           Control.Monad.Except
 import qualified Data.ByteString.Lazy as BS
-import           Data.Maybe           ( fromMaybe )
+import           Data.Maybe           ( fromMaybe, isJust )
 import           Data.Task            ( Task )
-import           Lib.Report           ( createReports, printReports )
-import           Lib.Util             ( maybeFilter )
+import           Lib.Report           ( Report, createReports, printReports )
+import           Lib.Util             ( filterAll )
 import           Options.Applicative
 import           Sources.PackageJson  ( parsePackageJson )
 import           System.FilePath.Glob ( compile, globDir )
 
 data AuditPackages = AuditPackages
-    { packageFilter :: Maybe String
+    { _packageFilter :: Maybe String
+    , _failingOnly   :: Bool
     }
 
 auditPackagesParser :: Parser AuditPackages
 auditPackagesParser =
-    AuditPackages <$> packageFilterParser
+    AuditPackages
+        <$> packageFilterParser
+        <*> failingOnly
 
 getPackageJsonPaths :: IO [FilePath]
 getPackageJsonPaths =
@@ -36,12 +39,18 @@ auditPackagesCommand =
     info auditPackagesParser $ progDesc "Run a dependency audit of the versions requested by individual pacakge.json files in the repo"
 
 runAuditPackagesCommand :: AuditPackages -> Task ()
-runAuditPackagesCommand (AuditPackages pkgFilter)= do
+runAuditPackagesCommand (AuditPackages pkgFilter failingOnlyFlag)= do
     paths <- liftIO getPackageJsonPaths
     files <- liftIO $ mapM BS.readFile paths
     audit <- liftEither $ mapM parsePackageJson files
-    let filteredReports = maybeFilter pkgFilter $ createReports audit
+    let filteredReports = filterAll filters $ createReports audit
     reports <- case filteredReports of
-        [] -> throwError $ "No packages match requested pattern \"" ++ fromMaybe "" pkgFilter ++ "\""
+        [] -> throwError "No packages match requested filtering options"
         xs -> return xs
     liftIO $ printReports filteredReports
+    where
+        filters :: [(String, Report) -> Bool]
+        filters =
+            [ maybe (const True) (\p -> (== p) . fst) pkgFilter
+            , if failingOnlyFlag then isJust . snd else const True
+            ]

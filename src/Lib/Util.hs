@@ -1,4 +1,7 @@
-module Lib.Util ( initMap, maybeFilter ) where
+module Lib.Util ( initMap, maybeFilter, filterAll ) where
+
+import Control.Applicative
+import Data.Monoid
 
 initMap :: (a -> b) -> (a -> b) -> [a] -> [b]
 initMap _ _ [] =
@@ -13,3 +16,10 @@ initMap fnFst fnLst (a:bs) =
 maybeFilter :: Eq a => Maybe a -> [(a, b)] -> [(a, b)]
 maybeFilter =
     maybe id (\ f -> filter ((== f) . fst))
+
+filterAll :: [a -> Bool] -> [a] -> [a]
+filterAll fns =
+    filter (combineFilters fns)
+    where
+        combineFilters fns x =
+            getAll . mconcat $ All <$> (fns <*> pure x)
